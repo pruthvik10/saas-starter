@@ -1,8 +1,21 @@
+// src/app/dashboard/page.tsx
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import StatCard from "@/components/StatCard";
 import TrafficArea from "@/components/TrafficArea";
+import type { Metadata } from "next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export default function DashboardPage() {
+export const metadata: Metadata = {
+  title: "Dashboard • SaaS Starter",
+  description: "Product metrics overview",
+};
+
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/login");
+
   return (
     <div className="min-h-screen flex">
       <Sidebar />
@@ -21,7 +34,7 @@ export default function DashboardPage() {
 
         <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-6">
           <div className="xl:col-span-2 rounded-2xl bg-white p-4 lg:p-6 shadow-sm">
-            <h2 className="font-medium mb-4">Traffic & Signups</h2>
+            <h2 className="font-medium mb-4">Traffic &amp; Signups</h2>
             <div className="h-72">
               <TrafficArea />
             </div>
